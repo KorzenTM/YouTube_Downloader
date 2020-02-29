@@ -30,10 +30,6 @@ class MainWindow(QMainWindow):
         button.resize(100,32)
         button.move(650,550)
         
-    def on_button_clicked(self):
-        alert=QMessageBox()
-        alert.setText("You clicked the button!")
-        alert.exec_()
 
     def center(self):
         #geometry of the main window
