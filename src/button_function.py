@@ -6,6 +6,7 @@ def download_video(self,location,link):
     os.chdir(location)
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([link])
+        msgbox=QMessageBox.information(self,"Potwierdzenie","Pobieranie zostało zakończone")
         
 def open_directory(self,location):
     #print(self.save_location.text())
