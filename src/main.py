@@ -6,6 +6,7 @@ Simple application downloading videos from YouTube platform written in Python(Py
 from importing_modules import *
 import button_function
 
+
 class MainWindow(QMainWindow):
     def __init__(self, *args,**kwargs):
         super(MainWindow,self).__init__(*args,**kwargs)
@@ -16,7 +17,7 @@ class MainWindow(QMainWindow):
         self.resize(800,600)
         self.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
         
-        self.label_hello=QLabel("Witaj w aplikacji YouTube Downloader",self)
+        self.label_hello=QLabel("YouTube Downloader",self)
         self.label_hello.setAlignment(Qt.AlignCenter)
         self.label_hello.setStyleSheet("font: 30pt Comic Sans MS")
         self.label_hello.resize(800,100)
@@ -62,9 +63,17 @@ class MainWindow(QMainWindow):
         self.button_open_dir.clicked.connect(lambda: button_function.open_directory(self,self.save_location.text()))
         self.button_open_dir.setToolTip("Otwiera wybrany folder")
         
+        self.label_3=QLabel("Status pobierania",self)
+        self.label_3.setAlignment(Qt.AlignLeft)
+        self.label_3.setStyleSheet("font: 15pt Comic Sans MS")
+        self.label_3.resize(150,100)
+        self.label_3.move(200,430)
+        self.status=QProgressBar(self)
+        self.status.setGeometry(50,460,450,25)
         self.button_download=QPushButton("POBIERZ",self)
-        self.button_download.resize(200,50)
-        self.button_download.move(300,450)
+        self.button_download.resize(215,50)
+        self.button_download.move(535,450)
+        self.button_download.setStyleSheet("background-color: #A52A2A")
         self.button_download.clicked.connect(lambda: button_function.download_video(self, self.save_location.text(),self.link_textbox.text()))
         
         self.button_help=QPushButton("Wsparcie techniczne",self)
@@ -77,17 +86,7 @@ class MainWindow(QMainWindow):
         self.button_quit.resize(100,32)
         self.button_quit.move(650,550)
         self.button_quit.setToolTip("Zamyka aplikację")
-                
-    def center(self):
-        #geometry of the main window
-        qr=self.frameGeometry()
-        #center point of screen
-        cp=QDesktopWidget().availableGeometry().center()
-        #move rectangle's center point to screen's center poit
-        qr.moveCenter(cp)
-        #top left of rectangle becomes top left of window centering it
-        self.move(qr.topLeft())
-   
+    
 if __name__=="__main__":
     
     app=QApplication(sys.argv)
