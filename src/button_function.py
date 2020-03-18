@@ -1,6 +1,5 @@
 from importing_modules import *
-
-
+      
 def download_finished_window():
     msg=QMessageBox()
     msg.setWindowTitle("Informacja")
@@ -36,10 +35,12 @@ def download_video(self,location,link):
         self.video_url =link 
         self.youtube = pytube.YouTube(self.video_url,on_progress_callback=progress_function)
         self.video = self.youtube.streams.get_by_itag(self.set_format.itemData(self.set_format.currentIndex()))
-        
+        file_name=str(self.video.default_filename.split('.')[0])        
+        temp=file_name+'.'+'mp4'
+        print(temp)
         if self.convert_mp3_check.isChecked():
             self.video.download(location)
-            for file in[n for n in os.listdir(location) if re.search('mp4',n)]:
+            for file in[n for n in os.listdir(location) if n==self.video.default_filename]:
                 full_path=os.path.join(location,file)
                 output_path=os.path.join(location,os.path.splitext(file)[0]+'.mp3')
                 clip=mp.AudioFileClip(full_path)
@@ -60,19 +61,22 @@ def save_directory(self):
     dialog.setFileMode(QFileDialog.DirectoryOnly)
     if dialog.exec_() == QFileDialog.Accepted:
         self.save_location.setText(dialog.selectedFiles()[0])
-
-def open_link(self,link):
-    self.video_url =link # paste here your Youube videos' url
-    self.youtube = pytube.YouTube(self.video_url)
-    self.video = self.youtube.streams.filter(progressive=True, file_extension='mp4').order_by('resolution')
-    self.description.setText("Tytuł:%s\nAutor:%s\nOpis:%s" %(self.youtube.title,self.youtube.author,self.youtube.description))
-    tag = ""
-    for i in self.video:
-        tag = re.split(r" itag=\"|\" mime_type", str(i))
-        temp=(str(i).split()[2].split("=")[1].split("/")[1]+" "+str(i).split()[3].split("=")[1]).replace('"',"").upper()
-        self.set_format.addItem(temp,int(tag[1]))
-        
-    
+      
+def check_state_link_textbox(self,link):
+    if self.link_textbox.text()=="":
+        self.check_button.setEnabled(False)
+    else:
+        self.check_button.setEnabled(True)
+        self.video_url =link # paste here your Youube videos' url
+        self.youtube = pytube.YouTube(self.video_url)
+        self.video = self.youtube.streams.filter(progressive=True, file_extension='mp4').order_by('resolution')
+        self.description.setText("Tytuł:%s\nAutor:%s\nOpis:%s" %(self.youtube.title,self.youtube.author,self.youtube.description))
+        tag = ""
+        for i in self.video:
+            tag = re.split(r" itag=\"|\" mime_type", str(i))
+            temp=(str(i).split()[2].split("=")[1].split("/")[1]+" "+str(i).split()[3].split("=")[1]).replace('"',"").upper()
+            self.set_format.addItem(temp,int(tag[1]))
+          
         
     
 

@@ -39,8 +39,10 @@ class MainWindow(QMainWindow):
         self.link_textbox=QLineEdit(self)
         self.link_textbox.move(220,180)
         self.link_textbox.resize(415,30)
+        self.link_textbox.textChanged.connect(lambda: button_function.check_state_link_textbox(self,self.link_textbox.text()))
         
         self.check_button=QPushButton("Sprawdź",self)
+        self.check_button.setEnabled(False)
         self.check_button.resize(100,30)
         self.check_button.move(650,180)
         self.check_button.clicked.connect(lambda: button_function.open_link(self,self.link_textbox.text()))
