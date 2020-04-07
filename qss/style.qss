@@ -17,37 +17,35 @@ QPushButton#download {
     background: #800000;
     padding: 20px;
     border-radius: 5px;
-    display: inline-block;
     border: none;
-    transition: all 0.4s ease 0s;
 }
 QPushButton#download:hover{
     background: #006400;
-    letter-spacing: 1px;
-    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
-    transition: all 0.4s ease 0s;
+}
+
+QPushButton#convert {
+    color: #fff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #800000;
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+}
+QPushButton#convert:hover{
+    background: #006400;
 }
 
 QPushButton#search {
     color: black !important;
     text-decoration: none;
     background: #FFE9A2;
-    text-decoration-color: black;
     padding: 20px;
     border-radius: 5px;
-    display: inline-block;
     border: none;
-    transition: all 0.4s ease 0s;
 }
 QPushButton#search:hover{
     background: #F8D775;
-    letter-spacing: 1px;
-    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
-    transition: all 0.4s ease 0s;
 }
 
 
@@ -58,16 +56,53 @@ QPushButton#support {
     background: #20B2AA;
     padding: 10px;
     border-radius: 5px;
-    display: inline-block;
     border: none;
-    transition: all 0.4s ease 0s;
 }
 QPushButton#support:hover{
     background: #66CDAA;
-    letter-spacing: 1px;
-    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
-    transition: all 0.4s ease 0s;
 }
 
+QLabel#top
+{
+    background-color: #B22222
+}
+
+QLabel#other
+{
+    background-color: #D3D3D3
+}
+
+QLabel#hello
+{
+    font: 20pt Times New Roman
+}
+
+QLabel#link
+{
+    font: 15pt Times New Roman
+}
+
+QLabel#information
+{
+    font: 10pt Times New Roman
+}
+
+QLabel#information
+{
+    font: 12pt Times New Roman
+}
+
+QLabel#location
+{
+    font: 15pt Times New Roman
+}
+
+QLabel#download_status
+{
+    font: 10pt Times New Roman
+}
+
+Qlabel#convert_mp3_check
+{
+    font: 10pt Times New Roman
+}

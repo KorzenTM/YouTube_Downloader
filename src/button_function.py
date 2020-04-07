@@ -12,17 +12,16 @@ def bad_link_warning(self):
     self.loading.setScaledSize(QSize(240, 120))
     self.image_label.setMovie(self.loading)
     self.loading.start()
-    self.link_textbox.textChanged
 
 
 def clear(self):
     if self.link_textbox.text() == "":
-        self.warning.clear()
         self.wrong_pic.clear()
         self.description.clear()
         self.image_label.clear()
         self.set_format.clear()
         self.save_location.clear()
+        self.app_status.showMessage("Status: Oczekiwanie")
 
 
 def download_video(self, location, link):

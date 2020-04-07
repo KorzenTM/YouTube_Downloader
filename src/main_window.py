@@ -17,20 +17,20 @@ class MainWindow(QMainWindow):
         self.top_background = QLabel(self)
         self.top_background.resize(780, 100)
         self.top_background.move(10, 10)
-        self.top_background.setStyleSheet("background-color: #B22222")
+        self.top_background.setObjectName("top")
         self.middle_background = QLabel(self)
         self.middle_background.resize(780, 260)
         self.middle_background.move(10, 150)
-        self.middle_background.setStyleSheet("background-color: #D3D3D3")
+        self.middle_background.setObjectName("other")
         self.download_background = QLabel(self)
         self.download_background.resize(780, 100)
         self.download_background.move(10, 420)
-        self.download_background.setStyleSheet("background-color: #D3D3D3")
+        self.download_background.setObjectName("other")
 
 
         self.label_hello = QLabel("YouTube Downloader", self)
         self.label_hello.setAlignment(Qt.AlignCenter | Qt.AlignRight)
-        self.label_hello.setStyleSheet("font: 25pt Times New Roman")
+        self.label_hello.setObjectName("hello")
         self.label_hello.resize(400, 100)
         self.label_hello.move(0, 10)
 
@@ -43,18 +43,13 @@ class MainWindow(QMainWindow):
 
         self.link = QLabel("Video Url:", self)
         self.link.setAlignment(Qt.AlignLeft)
-        self.link.setStyleSheet("font: 15pt Times New Roman")
+        self.link.setObjectName("link")
         self.link.resize(700, 200)
         self.link.move(20, 183)
 
         self.wrong_pic = QLabel(self)
         self.wrong_pic.resize(50, 50)
         self.wrong_pic.move(630, 170)
-        self.warning = QLabel(self)
-        self.warning.setAlignment(Qt.AlignLeft)
-        self.warning.setStyleSheet("font: 10pt Times New Roman")
-        self.warning.resize(400, 100)
-        self.warning.move(660, 185)
 
         self.link_textbox = QLineEdit(self)
         self.link_textbox.move(130, 180)
@@ -62,8 +57,9 @@ class MainWindow(QMainWindow):
         self.link_textbox.setPlaceholderText("Example:http://www.youtube.com/watch?v=ecsCrOEYl7c")
         self.link_textbox.textChanged.connect(lambda: button_function.clear(self))
         self.check_button = QPushButton(self)
-        self.check_button.setGeometry(730, 180, 50, 30)
+        self.check_button.setGeometry(660, 180, 35, 30)
         self.check_button.setIcon(QIcon("resources/icons/fetch.png"))
+        self.check_button.setToolTip("Sprawdza podany link")
         self.check_button.clicked.connect(
             lambda: button_function.check_state_link_textbox(self, self.link_textbox.text()))
         self.image_label = QLabel(self)
@@ -72,7 +68,7 @@ class MainWindow(QMainWindow):
 
         self.information = QLabel("Informacje o filmie", self)
         self.information.setAlignment(Qt.AlignLeft)
-        self.information.setStyleSheet("font: 10pt Times New Roman")
+        self.information.setObjectName("information")
         self.information.resize(400, 100)
         self.information.move(200, 220)
 
@@ -84,7 +80,7 @@ class MainWindow(QMainWindow):
 
         self.format = QLabel("Jakość:", self)
         self.format.setAlignment(Qt.AlignLeft)
-        self.format.setStyleSheet("font: 12pt Times New Roman")
+        self.format.setObjectName("format")
         self.format.resize(400, 100)
         self.format.move(590, 375)
 
@@ -93,7 +89,7 @@ class MainWindow(QMainWindow):
 
         self.location = QLabel("Zapisz do:", self)
         self.location.setAlignment(Qt.AlignLeft)
-        self.location.setStyleSheet("font: 15pt Times New Roman")
+        self.location.setObjectName("location")
         self.location.resize(700, 200)
         self.location.move(20, 370)
 
@@ -106,25 +102,26 @@ class MainWindow(QMainWindow):
         self.button_browse.move(535, 370)
         self.button_browse.setObjectName("search")
         self.button_browse.clicked.connect(lambda: button_function.save_directory(self))
-        self.button_browse.setToolTip("Przegląda dysk")
+        self.button_browse.setToolTip("Wybierz miejsce zapisu")
 
         self.download_status = QLabel("Status pobierania", self)
         self.download_status.setAlignment(Qt.AlignLeft)
-        self.download_status.setStyleSheet("font: 10pt Times New Roman")
+        self.download_status.setObjectName("download_status")
         self.download_status.resize(150, 100)
         self.download_status.move(200, 430)
 
         self.status = QProgressBar(self)
         self.status.setGeometry(50, 460, 450, 25)
 
-        self.convert_mp3_check = QCheckBox("Konwersja po pobraniu na:", self)
-        self.convert_mp3_check.setGeometry(50, 425, 250, 150)
-        self.convert_mp3_check.setStyleSheet("font: 10pt Times New Roman")
+        self.convert_mp3_check = QCheckBox("Zaznacz, aby po pobraniu rozpocząć proces konwersji.", self)
+        self.convert_mp3_check.setGeometry(50, 425, 350, 150)
+        self.convert_mp3_check.setObjectName("convert_mp3_check")
 
         self.button_download = QPushButton("POBIERZ", self)
         self.button_download.resize(215, 50)
         self.button_download.move(535, 450)
         self.button_download.setObjectName("download")
+        self.button_download.setToolTip("Pobiera plik w wskazane miejsce")
         self.button_download.clicked.connect(lambda: button_function.download_video(self, self.save_location.text(), self.link_textbox.text()))
 
         self.app_status = QStatusBar(self)
