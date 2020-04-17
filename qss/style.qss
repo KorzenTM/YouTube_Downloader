@@ -10,6 +10,19 @@ QLabel#status {
     font: 10pt Times New Roman;
 }
 
+QPushButton#check {
+    color: #CD5C5C !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #D3D3D3;
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+}
+QPushButton#check:hover{
+    background: #A52A2A;
+}
+
 QPushButton#download {
     color: #fff !important;
     text-transform: uppercase;
@@ -64,45 +77,56 @@ QPushButton#support:hover{
 
 QLabel#top
 {
-    background-color: #B22222
+    background-color: #B22222;
+    border: 2px solid black;
+    border-radius: 25px;
 }
 
 QLabel#other
 {
-    background-color: #D3D3D3
+    background-color: #D3D3D3;
+    border: 2px solid black;
+    border-radius: 25px;
+}
+
+QLabel#appstatus
+{
+    background-color: #D3D3D3;
+    border: 2px solid black;
+    border-radius: 25px;
 }
 
 QLabel#hello
 {
-    font: 20pt Times New Roman
+    font: 20pt Times New Roman;
 }
 
 QLabel#link
 {
-    font: 15pt Times New Roman
+    font: 15pt Times New Roman;
 }
 
 QLabel#information
 {
-    font: 10pt Times New Roman
+    font: 10pt Times New Roman;
 }
 
 QLabel#information
 {
-    font: 12pt Times New Roman
+    font: 12pt Times New Roman;
 }
 
 QLabel#location
 {
-    font: 15pt Times New Roman
+    font: 13pt Times New Roman;
 }
 
 QLabel#download_status
 {
-    font: 10pt Times New Roman
+    font: 12pt Times New Roman;
 }
 
 Qlabel#convert_mp3_check
 {
-    font: 10pt Times New Roman
+    font: 10pt Times New Roman;
 }

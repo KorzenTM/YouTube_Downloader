@@ -2,31 +2,34 @@ from libraries import *
 import alerts
 
 
-class Downloader(QThread):
-    processSignal = pyqtSignal(float)
+class convert(QThread):
+    processSignal = pyqtSignal(str)
 
-    def __init__(self, parent=None):
-        super(Downloader, self).__init__(parent=parent)
-        self.path = None
-        self.url = None
-        self.video = None
-        self.stream = None
+    def __init__(self):
+        super(convert, self).__init__()
+        self.full_path = None
+        self.output_path = None
+        self.sound_quality = None
 
-    def download_video(self, url, path):
-        self.path = path
-        self.url = url
+    def convert(self, full_path, output_path, sound_quality):
+        self.full_path = full_path
+        self.output_path = output_path
+        self.sound_quality = sound_quality
 
         self.start()
 
     def run(self):
-        self.video = YouTube(self.url)
-        self.video.register_on_progress_callback(self.return_progress)
-        self.stream = self.video.streams.first()
-        self.stream.download(self.path)
+        message = "Status: Konwersja"
+        self.processSignal.emit(message)
+        clip = mp.AudioFileClip(self.full_path)
+        try:
+            clip.write_audiofile(self.output_path, fps=44100, nbytes=4, bitrate=self.sound_quality)
+        except:
+            alerts.convert_error(self)
+        else:
+            message_2 = "Status: Konwersja zakończona!"
+            self.processSignal.emit(message_2)
 
-    def return_progress(self, stream, chunk, file_handle, bytes_remaining):
-        percentage = 1 - bytes_remaining / self.stream.filesize
-        self.processSignal.emit(percentage)
 
 class convert_window(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -35,57 +38,121 @@ class convert_window(QMainWindow):
         self.setWindowIcon(QIcon("resources/icons/converter.png"))
         self.resize(480, 320)
 
-        qss_file = open("qss/style.qss").read()
-        self.setStyleSheet(qss_file)
+        self.sound_quality = "64k"
+        self.format = ""
 
-        self.top_background = QLabel(self)
-        self.top_background.resize(100, 100)
-        self.top_background.move(10, 10)
-        self.setObjectName("top")
-        self.top_background.setStyleSheet("background-color: #D3D3D3")
+        self.settings_background = QLabel(self)
+        self.settings_background.resize(460, 300)
+        self.settings_background.move(10, 10)
+        self.settings_background.setStyleSheet(
+            "background-color: #D3D3D3; border: 2px solid black; border-radius: 25px;")
 
-        self.top_background = QLabel(self)
-        self.top_background.resize(320, 300)
-        self.top_background.move(10, 10)
-        self.top_background.setStyleSheet("background-color: #D3D3D3")
+        self.format = QLabel("Format:", self)
+        self.format.setGeometry(60, 110, 100, 30)
+        self.mp3_button = QPushButton("mp3", self)
+        self.mp3_button.setGeometry(30, 140, 50, 30)
+        self.mp3_button.setStyleSheet('background-color: #8B0000')
+        self.mp3_button.setCheckable(True)
+        self.wav_button = QPushButton("wma", self)
+        self.wav_button.setGeometry(90, 140, 50, 30)
+        self.wav_button.setStyleSheet('background-color: #8B0000')
+        self.wav_button.setCheckable(True)
+        self.btn_group = QButtonGroup(self)
+        self.btn_group.addButton(self.mp3_button, 1)
+        self.btn_group.addButton(self.wav_button, 2)
+        self.btn_group.buttonClicked.connect(self.on_button_clicked)
+        self.format = QLabel("Jakość", self)
+        self.format.setGeometry(330, 110, 150, 30)
+        self.quality = QSlider(Qt.Horizontal, self)
+        self.quality.setGeometry(280, 140, 150, 30)
+        self.quality.setFocusPolicy(Qt.StrongFocus)
+        self.quality.setTickPosition(QSlider.TicksBothSides)
+        self.quality.setTickInterval(1)
+        self.quality.setMinimum(0)
+        self.quality.setMaximum(3)
+        self.quality.valueChanged[int].connect(self.change_value)
+        self.quality_info = QLabel(self)
+        self.quality_info.setText("Ekonomiczny\n64 kbps")
+        self.quality_info.setGeometry(330, 170, 100, 60)
 
-        self.set_audio_format = QComboBox(self)
-        self.set_audio_format.setGeometry(230, 250, 50, 50)
-        self.set_audio_format.addItem("MP3")
-        self.set_audio_format.addItem("WAV")
-
-        self.convert_button = QPushButton("Convert", self)
+        self.convert_button = QPushButton("Konwertuj", self)
         self.convert_button.setObjectName("convert")
-        self.convert_button.setGeometry(100, 100, 50, 30)
-        #self.convert_button.clicked.connect(self.convert())
+        self.convert_button.setGeometry(160, 230, 150, 50)
+        self.convert_button.clicked.connect(self.convert_button_clicked)
+        self.app_status = QStatusBar(self)
+        self.app_status.showMessage("Status: Oczekiwanie")
+        self.app_status.setGeometry(10, 280, 460, 20)
+
+        self.logo = QLabel(self)
+        self.pixmap = QPixmap("resources/img/converter_logo.png")
+        self.scaled_pix = self.pixmap.scaled(50, 50, Qt.KeepAspectRatio, Qt.FastTransformation)
+        self.logo.setPixmap(self.scaled_pix)
+        self.logo.resize(50, 50)
+        self.logo.move(400, 250)
+
+    def on_button_clicked(self):
+        if self.btn_group.checkedId() == 1:
+            self.mp3_button.setStyleSheet('background-color: #006400')
+            self.wav_button.setStyleSheet('background-color: #8B0000')
+            self.format = ".mp3"
+            print(self.format)
+        if self.btn_group.checkedId() == 2:
+            self.wav_button.setStyleSheet('background-color: #006400')
+            self.mp3_button.setStyleSheet('background-color: #8B0000')
+            self.format = ".wav"
+            print(self.format)
+
+    def change_value(self, value=0):
+        if value == 0:
+            self.sound_quality = "64k"
+            self.quality_info.setText("Ekonomiczna\n64 kbps")
+        if value == 1:
+            self.sound_quality = "128k"
+            self.quality_info.setText("Standard\n128 kbps")
+        if value == 2:
+            self.sound_quality = "192k"
+            self.quality_info.setText("Dobra\n192 kbps")
+        if value == 3:
+            self.sound_quality = "320k"
+            self.quality_info.setText("Najlepsza\n320 kbps")
 
     def get_data(self, location, filename):
-        print(location)
-        print(filename)
+        location = location
+        filename = filename
 
+        self.name_info = QLabel("Plik:", self)
+        self.name_info.setGeometry(15, 30, 50, 30)
+        self.file_name = QLineEdit(self)
+        self.file_name.setGeometry(50, 30, 400, 30)
+        self.file_name.setText(filename)
+        self.file_name.setReadOnly(True)
 
-""""
-    def convert(self):
-        # convert_window.show()
-        audio_formats = [".mp3", ".wav"]
-        file_name = str(filename.split('.')[0])
-        #self.app_status.setText("Status: Konwersja")
-        for file in [n for n in os.listdir(location) if n == self.video.default_filename]:
-            full_path = os.path.join(location, file)
-            output_path = os.path.join(location, os.path.splitext(file)[0] + audio_formats[index])
-            clip = mp.AudioFileClip(full_path)
-            clip.write_audiofile(output_path)
-        alerts.convert_finished_window()
-        #self.app_status.setText("Status: Konwersja zakończona")
-"""
+        self.location_info = QLabel("Lokalizacja: ", self)
+        self.location_info.setGeometry(15, 60, 100, 30)
+        self.file_location = QLineEdit(self)
+        self.file_location.setGeometry(100, 60, 350, 30)
+        self.file_location.setText(location)
+        self.file_location.setReadOnly(True)
+
+    def convert_button_clicked(self):
+        def set_status(message):
+            self.app_status.showMessage(message)
+
+        location = self.file_location.text()
+        file = self.file_name.text()
+        full_path = os.path.join(location, file)
+        output_path = os.path.join(location, os.path.splitext(file)[0] + str(self.format))
+        quality = self.sound_quality
+        self.conv = convert()
+        self.thread_1 = QThread()
+        self.conv.moveToThread(self.thread_1)
+        self.conv.started.connect(self.conv.run)
+        self.conv.processSignal.connect(set_status)
+        self.conv.convert(full_path, output_path, quality)
 
 
 def converter(self, location, filename):
     self.app_status.showMessage("Status: Konwersja")
     window_2 = convert_window(self)
-    window_2.get_data( location, filename)
+    window_2.get_data(location, filename)
     window_2.show()
-
-
-
-

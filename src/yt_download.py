@@ -6,8 +6,8 @@ import audio_converter
 class Downloader(QThread):
     processSignal = pyqtSignal(float)
 
-    def __init__(self, parent=None):
-        super(Downloader, self).__init__(parent=parent)
+    def __init__(self, parent = None):
+        super(Downloader, self).__init__()
         self.path = None
         self.url = None
         self.video = None
@@ -32,11 +32,11 @@ class Downloader(QThread):
             self.stream.download(self.path)
 
     def return_progress(self, stream, chunk, bytes_remaining):
-        percentage = round((1 - bytes_remaining / self.stream.filesize) * 100,2)
+        percentage = round((1 - bytes_remaining / self.stream.filesize) * 100, 2)
         self.processSignal.emit(percentage)
 
 
-def test_2(self, location, default_filename):
+def end_download(self, location, default_filename):
     if self.convert_mp3_check.isChecked():
         audio_converter.converter(self, location, default_filename)
     else:
@@ -44,18 +44,19 @@ def test_2(self, location, default_filename):
         alerts.download_finished_window()
     self.app_status.showMessage("Status: Oczekiwanie")
 
-def test(self, link, location, default_filename):
+
+def video_download(self, link, location, default_filename):
     def progress_function(percent):
         if percent != self.status.value():
             self.status.setValue(percent)
-        print(self.status.value())
-        if self.status.value() == 100:
-            test_2(self, location, default_filename)
-
+            print(percent)
+            if percent == 100.0:
+                end_download(self, location, default_filename)
     itag = self.set_format.itemData(self.set_format.currentIndex())
-    self.downloader = Downloader(self)
+    self.downloader = Downloader()
     self.downloader.processSignal.connect(progress_function)
     self.downloader.download_video(link, location, itag)
+
 
 def download(self, link, location):
     itag = self.set_format.itemData(self.set_format.currentIndex())
@@ -65,10 +66,11 @@ def download(self, link, location):
     file_location = str(location) + str("/") + str(default_filename.split('.')[0]) + str(".mp4")
     print(file_location)
     if Path(file_location).is_file():
+        self.app_status.showMessage("Status: Plik istnieje")
         alerts.file_exist(self, location, default_filename)
     else:
         self.app_status.showMessage("Status: Pobieranie")
-        test(self, link, location, default_filename)
+        video_download(self, link, location, default_filename)
 
 
 def information(self, link):

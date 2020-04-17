@@ -31,21 +31,21 @@ def download_finished_window():
     msg_download.exec_()
 
 
-def convert_finished_window():
-    msg_convert = QMessageBox()
-    msg_convert.setWindowTitle("Informacja")
-    msg_convert.setText("Konwersja została zakończona!")
-    msg_convert.setInformativeText("Plik został skonwertowany do wybranego formatu.")
-    msg_convert.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
-    msg_convert.setIcon(QMessageBox.Information)
-    msg_convert.exec_()
-
-
 def download_error():
     msg_error = QMessageBox()
     msg_error.setWindowTitle("Błąd")
     msg_error.setText("Wystąpił bląd podczas pobierania!")
     msg_error.setInformativeText("Nie jest możliwe rozpoczęcie pobierania. Sprawdź link bądź połączenie z internetem.")
+    msg_error.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
+    msg_error.setIcon(QMessageBox.Critical)
+    msg_error.exec_()
+
+
+def convert_error(self):
+    msg_error = QMessageBox()
+    msg_error.setWindowTitle("Błąd")
+    msg_error.setText("Wystąpił bląd podczas konwersji!")
+    msg_error.setInformativeText("Nie jest możliwe rozpoczęcie konwersji. Sprawdź plik bądź wybrane ustawienia.")
     msg_error.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
     msg_error.setIcon(QMessageBox.Critical)
     msg_error.exec_()

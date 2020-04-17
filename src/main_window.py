@@ -6,11 +6,11 @@ class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
-        qss_file = open("qss/style.qss").read()
+        self.qss_file = open("qss/style.qss").read()
 
         self.setWindowTitle("YouTube Video Downloader by KorzenTM")
         self.resize(800, 600)
-        self.setStyleSheet(qss_file)
+        self.setStyleSheet(self.qss_file)
         self.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
 
         # backgrounds
@@ -18,15 +18,21 @@ class MainWindow(QMainWindow):
         self.top_background.resize(780, 100)
         self.top_background.move(10, 10)
         self.top_background.setObjectName("top")
+
         self.middle_background = QLabel(self)
         self.middle_background.resize(780, 260)
         self.middle_background.move(10, 150)
         self.middle_background.setObjectName("other")
+
         self.download_background = QLabel(self)
         self.download_background.resize(780, 100)
         self.download_background.move(10, 420)
         self.download_background.setObjectName("other")
 
+        self.status_background = QLabel(self)
+        self.status_background.resize(800, 50)
+        self.status_background.move(0, 550)
+        self.status_background.setObjectName("appstatus")
 
         self.label_hello = QLabel("YouTube Downloader", self)
         self.label_hello.setAlignment(Qt.AlignCenter | Qt.AlignRight)
@@ -57,8 +63,11 @@ class MainWindow(QMainWindow):
         self.link_textbox.setPlaceholderText("Example:http://www.youtube.com/watch?v=ecsCrOEYl7c")
         self.link_textbox.textChanged.connect(lambda: button_function.clear(self))
         self.check_button = QPushButton(self)
-        self.check_button.setGeometry(660, 180, 35, 30)
+        self.check_button.setGeometry(680, 175, 40, 40)
         self.check_button.setIcon(QIcon("resources/icons/fetch.png"))
+        self.check_button.setIconSize(QSize(40, 40))
+        self.check_button.setAutoFillBackground(True)
+        self.check_button.setObjectName("check")
         self.check_button.setToolTip("Sprawdza podany link")
         self.check_button.clicked.connect(
             lambda: button_function.check_state_link_textbox(self, self.link_textbox.text()))
@@ -87,10 +96,10 @@ class MainWindow(QMainWindow):
         self.set_format = QComboBox(self)
         self.set_format.setGeometry(650, 370, 130, 30)
 
-        self.location = QLabel("Zapisz do:", self)
+        self.location = QLabel("Lokalizacja:", self)
         self.location.setAlignment(Qt.AlignLeft)
         self.location.setObjectName("location")
-        self.location.resize(700, 200)
+        self.location.resize(500, 200)
         self.location.move(20, 370)
 
         self.save_location = QLineEdit(self)
@@ -126,11 +135,23 @@ class MainWindow(QMainWindow):
 
         self.app_status = QStatusBar(self)
         self.app_status.showMessage("Status: Oczekiwanie")
-        self.app_status.setGeometry(0, 560, 800, 40)
+        self.app_status.setGeometry(0, 555, 800, 40)
         self.app_status.setObjectName("status")
-        self.write = QLabel("Problem z aplikacją?", self)
-        self.button_help = QPushButton("Napisz!", self)
-        self.button_help.setObjectName("support")
-        self.button_help.setToolTip("Problem? Skontaktuj się ze mną.")
-        self.app_status.addPermanentWidget(self.write)
-        self.app_status.addPermanentWidget(self.button_help)
+        self.time = QLabel(self)
+        self.date = QLabel(self)
+
+        timer = QTimer(self)
+        timer.timeout.connect(self.showTime)
+        self.showTime()
+        timer.start(1000) #update every second
+        datetime = QDate.currentDate()
+        self.date.setText(datetime.toString(Qt.DefaultLocaleLongDate))
+
+        self.app_status.addPermanentWidget(self.date)
+        self.app_status.addPermanentWidget(self.time)
+
+    def showTime(self):
+        currentTime = QTime.currentTime()
+
+        displayTxt = currentTime.toString('hh:mm:ss')
+        self.time.setText(displayTxt)
