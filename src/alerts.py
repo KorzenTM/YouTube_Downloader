@@ -21,7 +21,7 @@ def no_location(self):
     msg_location.exec_()
 
 
-def download_finished_window():
+def download_finished_window(self):
     msg_download = QMessageBox()
     msg_download.setWindowTitle("Informacja")
     msg_download.setText("Pobieranie zostało zakończone!")
@@ -31,21 +31,11 @@ def download_finished_window():
     msg_download.exec_()
 
 
-def download_error():
+def download_error(self):
     msg_error = QMessageBox()
     msg_error.setWindowTitle("Błąd")
     msg_error.setText("Wystąpił bląd podczas pobierania!")
     msg_error.setInformativeText("Nie jest możliwe rozpoczęcie pobierania. Sprawdź link bądź połączenie z internetem.")
-    msg_error.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
-    msg_error.setIcon(QMessageBox.Critical)
-    msg_error.exec_()
-
-
-def convert_error(self):
-    msg_error = QMessageBox()
-    msg_error.setWindowTitle("Błąd")
-    msg_error.setText("Wystąpił bląd podczas konwersji!")
-    msg_error.setInformativeText("Nie jest możliwe rozpoczęcie konwersji. Sprawdź plik bądź wybrane ustawienia.")
     msg_error.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
     msg_error.setIcon(QMessageBox.Critical)
     msg_error.exec_()
@@ -59,6 +49,25 @@ def information_error():
     msg_information_error.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
     msg_information_error.setIcon(QMessageBox.Critical)
     msg_information_error.exec_()
+
+
+def convert_finished(self):
+    msg_convert_finished = QMessageBox()
+    msg_convert_finished.setWindowTitle("Informacja")
+    msg_convert_finished.setText("Konwersja została zakończona!")
+    msg_convert_finished.setInformativeText("Konwersja do wybranego typu została zakończona. Okno zostanie zamknięte po wciśnieciu przycisku OK.")
+    msg_convert_finished.setWindowIcon(QIcon("resources/icons/converter.png"))
+    msg_convert_finished.setIcon(QMessageBox.Information)
+    msg_convert_finished.exec_()
+
+def convert_error(self):
+    msg_convert_error = QMessageBox()
+    msg_convert_error.setWindowTitle("Błąd")
+    msg_convert_error.setText("Wystąpił problem z konwersją!")
+    msg_convert_error.setInformativeText("Proces konwersji nie może zostać rozpoczęty. Sprawdź format bądź jakość.")
+    msg_convert_error.setWindowIcon(QIcon("resources/icons/converter.png"))
+    msg_convert_error.setIcon(QMessageBox.Critical)
+    msg_convert_error.exec_()
 
 
 def file_exist(self, location, filename):

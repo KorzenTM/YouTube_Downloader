@@ -25,7 +25,7 @@ class Downloader(QThread):
         try:
             self.video = pytube.YouTube(self.url)
         except:
-            alerts.download_error()
+            alerts.download_error(self)
         else:
             self.video.register_on_progress_callback(self.return_progress)
             self.stream = self.video.streams.get_by_itag(self.itag)
@@ -41,7 +41,7 @@ def end_download(self, location, default_filename):
         audio_converter.converter(self, location, default_filename)
     else:
         self.app_status.showMessage("Status: Pobieranie Zakończone")
-        alerts.download_finished_window()
+        alerts.download_finished_window(self)
     self.app_status.showMessage("Status: Oczekiwanie")
 
 
@@ -49,7 +49,6 @@ def video_download(self, link, location, default_filename):
     def progress_function(percent):
         if percent != self.status.value():
             self.status.setValue(percent)
-            print(percent)
             if percent == 100.0:
                 end_download(self, location, default_filename)
     itag = self.set_format.itemData(self.set_format.currentIndex())
@@ -64,7 +63,6 @@ def download(self, link, location):
     stream = video.streams.get_by_itag(itag)
     default_filename = stream.default_filename #there is a only way for me to get a default_filename
     file_location = str(location) + str("/") + str(default_filename.split('.')[0]) + str(".mp4")
-    print(file_location)
     if Path(file_location).is_file():
         self.app_status.showMessage("Status: Plik istnieje")
         alerts.file_exist(self, location, default_filename)

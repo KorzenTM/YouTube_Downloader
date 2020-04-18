@@ -5,7 +5,7 @@ import alerts
 class convert(QThread):
     processSignal = pyqtSignal(str)
 
-    def __init__(self):
+    def __init__(self, parent=None):
         super(convert, self).__init__()
         self.full_path = None
         self.output_path = None
@@ -20,13 +20,15 @@ class convert(QThread):
 
     def run(self):
         message = "Status: Konwersja"
+        error_message = "Status: Wystąpił błąd podczas konwersji. Sprawdź ustawienia"
         self.processSignal.emit(message)
-        clip = mp.AudioFileClip(self.full_path)
         try:
+            clip = mp.AudioFileClip(self.full_path)
             clip.write_audiofile(self.output_path, fps=44100, nbytes=4, bitrate=self.sound_quality)
         except:
-            alerts.convert_error(self)
+            self.processSignal.emit(error_message)
         else:
+            os.remove(self.full_path)
             message_2 = "Status: Konwersja zakończona!"
             self.processSignal.emit(message_2)
 
@@ -50,16 +52,24 @@ class convert_window(QMainWindow):
         self.format = QLabel("Format:", self)
         self.format.setGeometry(60, 110, 100, 30)
         self.mp3_button = QPushButton("mp3", self)
+        self.mp3_button.setToolTip("Wybranie formatu .mp3")
         self.mp3_button.setGeometry(30, 140, 50, 30)
         self.mp3_button.setStyleSheet('background-color: #8B0000')
         self.mp3_button.setCheckable(True)
         self.wav_button = QPushButton("wma", self)
+        self.wav_button.setToolTip("Wybranie formatu .wav")
         self.wav_button.setGeometry(90, 140, 50, 30)
         self.wav_button.setStyleSheet('background-color: #8B0000')
         self.wav_button.setCheckable(True)
+        self.ogg_button = QPushButton("ogg", self)
+        self.ogg_button.setToolTip("Wybranie formatu .ogg")
+        self.ogg_button.setGeometry(30, 175, 50, 30)
+        self.ogg_button.setStyleSheet('background-color: #8B0000')
+        self.ogg_button.setCheckable(True)
         self.btn_group = QButtonGroup(self)
         self.btn_group.addButton(self.mp3_button, 1)
         self.btn_group.addButton(self.wav_button, 2)
+        self.btn_group.addButton(self.ogg_button, 3)
         self.btn_group.buttonClicked.connect(self.on_button_clicked)
         self.format = QLabel("Jakość", self)
         self.format.setGeometry(330, 110, 150, 30)
@@ -77,8 +87,11 @@ class convert_window(QMainWindow):
 
         self.convert_button = QPushButton("Konwertuj", self)
         self.convert_button.setObjectName("convert")
+        self.convert_button.setToolTip("Rozpocznij konwersję do wybranego formatu")
         self.convert_button.setGeometry(160, 230, 150, 50)
         self.convert_button.clicked.connect(self.convert_button_clicked)
+        self.progres = QLabel(self)
+        self.progres.setGeometry(320, 230, 50, 50)
         self.app_status = QStatusBar(self)
         self.app_status.showMessage("Status: Oczekiwanie")
         self.app_status.setGeometry(10, 280, 460, 20)
@@ -88,19 +101,24 @@ class convert_window(QMainWindow):
         self.scaled_pix = self.pixmap.scaled(50, 50, Qt.KeepAspectRatio, Qt.FastTransformation)
         self.logo.setPixmap(self.scaled_pix)
         self.logo.resize(50, 50)
-        self.logo.move(400, 250)
+        self.logo.move(400, 240)
 
     def on_button_clicked(self):
         if self.btn_group.checkedId() == 1:
             self.mp3_button.setStyleSheet('background-color: #006400')
             self.wav_button.setStyleSheet('background-color: #8B0000')
+            self.ogg_button.setStyleSheet('background-color: #8B0000')
             self.format = ".mp3"
-            print(self.format)
         if self.btn_group.checkedId() == 2:
             self.wav_button.setStyleSheet('background-color: #006400')
             self.mp3_button.setStyleSheet('background-color: #8B0000')
+            self.ogg_button.setStyleSheet('background-color: #8B0000')
             self.format = ".wav"
-            print(self.format)
+        if self.btn_group.checkedId() == 3:
+            self.ogg_button.setStyleSheet('background-color: #006400')
+            self.wav_button.setStyleSheet('background-color: #8B0000')
+            self.mp3_button.setStyleSheet('background-color: #8B0000')
+            self.format = ".ogg"
 
     def change_value(self, value=0):
         if value == 0:
@@ -137,6 +155,27 @@ class convert_window(QMainWindow):
     def convert_button_clicked(self):
         def set_status(message):
             self.app_status.showMessage(message)
+
+            self.loading = QMovie("resources/gif/convert_progres.gif")
+            self.loading.setScaledSize(QSize(50, 50))
+            self.progres.setMovie(self.loading)
+            self.loading.start()
+
+            self.pixmap_1 = QPixmap("resources/icons/wrong.png")
+            self.scaled_pix_1 = self.pixmap_1.scaled(50, 50, Qt.KeepAspectRatio, Qt.FastTransformation)
+
+            self.pixmap_2 = QPixmap("resources/icons/check.png")
+            self.scaled_pix_2 = self.pixmap_2.scaled(50, 50, Qt.KeepAspectRatio, Qt.FastTransformation)
+
+            if message == "Status: Wystąpił błąd podczas konwersji. Sprawdź ustawienia":
+                self.progres.clear()
+                self.progres.setPixmap(self.scaled_pix_1)
+                alerts.convert_error(self)
+            if message == "Status: Konwersja zakończona!":
+                self.progres.clear()
+                self.progres.setPixmap(self.scaled_pix_2)
+                alerts.convert_finished(self)
+                self.close()
 
         location = self.file_location.text()
         file = self.file_name.text()
