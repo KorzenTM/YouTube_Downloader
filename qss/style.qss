@@ -1,0 +1,132 @@
+QMainWindow {
+    background-color: #6495ED;
+}
+
+QLabel {
+    font: 10pt Times New Roman;
+}
+
+QLabel#status {
+    font: 10pt Times New Roman;
+}
+
+QPushButton#check {
+    color: #CD5C5C !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #D3D3D3;
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+}
+QPushButton#check:hover{
+    background: #A52A2A;
+}
+
+QPushButton#download {
+    color: #fff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #800000;
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+}
+QPushButton#download:hover{
+    background: #006400;
+}
+
+QPushButton#convert {
+    color: #fff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #800000;
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+}
+QPushButton#convert:hover{
+    background: #006400;
+}
+
+QPushButton#search {
+    color: black !important;
+    text-decoration: none;
+    background: #FFE9A2;
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+}
+QPushButton#search:hover{
+    background: #F8D775;
+}
+
+
+QPushButton#support {
+    color: #fff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #20B2AA;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+QPushButton#support:hover{
+    background: #66CDAA;
+}
+
+QLabel#top
+{
+    background-color: #B22222;
+    border: 2px solid black;
+    border-radius: 25px;
+}
+
+QLabel#other
+{
+    background-color: #D3D3D3;
+    border: 2px solid black;
+    border-radius: 25px;
+}
+
+QLabel#appstatus
+{
+    background-color: #D3D3D3;
+    border: 2px solid black;
+    border-radius: 25px;
+}
+
+QLabel#hello
+{
+    font: 20pt Times New Roman;
+}
+
+QLabel#link
+{
+    font: 15pt Times New Roman;
+}
+
+QLabel#information
+{
+    font: 10pt Times New Roman;
+}
+
+QLabel#information
+{
+    font: 12pt Times New Roman;
+}
+
+QLabel#location
+{
+    font: 13pt Times New Roman;
+}
+
+QLabel#download_status
+{
+    font: 12pt Times New Roman;
+}
+
+Qlabel#convert_mp3_check
+{
+    font: 10pt Times New Roman;
+}
