@@ -7,9 +7,9 @@ import urllib
 import webbrowser
 import os
 import time
-import pytube
 import re
-import moviepy.editor as mp
+import pytube
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 import sys
 import subprocess
 from pathlib import Path

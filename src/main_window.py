@@ -62,6 +62,7 @@ class MainWindow(QMainWindow):
         self.link_textbox.resize(500, 30)
         self.link_textbox.setPlaceholderText("Example:http://www.youtube.com/watch?v=ecsCrOEYl7c")
         self.link_textbox.textChanged.connect(lambda: button_function.clear(self))
+
         self.check_button = QPushButton(self)
         self.check_button.setGeometry(680, 175, 40, 40)
         self.check_button.setIcon(QIcon("resources/icons/fetch.png"))
@@ -71,6 +72,7 @@ class MainWindow(QMainWindow):
         self.check_button.setToolTip("Sprawdza podany link")
         self.check_button.clicked.connect(
             lambda: button_function.check_state_link_textbox(self, self.link_textbox.text()))
+
         self.image_label = QLabel(self)
         self.image_label.resize(240, 120)
         self.image_label.move(540, 240)
@@ -152,6 +154,5 @@ class MainWindow(QMainWindow):
 
     def showTime(self):
         currentTime = QTime.currentTime()
-
         displayTxt = currentTime.toString('hh:mm:ss')
         self.time.setText(displayTxt)

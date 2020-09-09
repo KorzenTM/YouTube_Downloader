@@ -23,7 +23,7 @@ class convert(QThread):
         error_message = "Status: Wystąpił błąd podczas konwersji. Sprawdź ustawienia"
         self.processSignal.emit(message)
         try:
-            clip = mp.AudioFileClip(self.full_path)
+            clip = AudioFileClip(self.full_path)
             clip.write_audiofile(self.output_path, fps=44100, nbytes=4, bitrate=self.sound_quality)
         except:
             self.processSignal.emit(error_message)

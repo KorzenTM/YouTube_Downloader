@@ -96,3 +96,4 @@ def information(self, link):
         self.scaled = self.thumb.scaled(240, 120, Qt.KeepAspectRatio, Qt.FastTransformation)
         self.image_label.setPixmap(self.scaled)
 
+

@@ -21,6 +21,7 @@ def clear(self):
         self.image_label.clear()
         self.set_format.clear()
         self.save_location.clear()
+        self.status.setValue(0)
         self.app_status.showMessage("Status: Oczekiwanie")
 
 
