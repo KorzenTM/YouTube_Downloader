@@ -1,4 +1,5 @@
 from libraries import *
+import button_function
 import alerts
 
 
@@ -191,7 +192,6 @@ class convert_window(QMainWindow):
 
 
 def converter(self, location, filename):
-    self.app_status.showMessage("Status: Konwersja")
     window_2 = convert_window(self)
     window_2.get_data(location, filename)
     window_2.show()

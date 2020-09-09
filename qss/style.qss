@@ -23,6 +23,19 @@ QPushButton#check:hover{
     background: #A52A2A;
 }
 
+QPushButton#reset {
+    color: #CD5C5C !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #D3D3D3;
+    padding: 20px;
+    border-radius: 5px;
+    border: none;
+}
+QPushButton#reset:hover{
+    background: #6495ED;
+}
+
 QPushButton#download {
     color: #fff !important;
     text-transform: uppercase;
@@ -35,6 +48,7 @@ QPushButton#download {
 QPushButton#download:hover{
     background: #006400;
 }
+
 
 QPushButton#convert {
     color: #fff !important;

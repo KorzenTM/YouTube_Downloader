@@ -13,7 +13,6 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(self.qss_file)
         self.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
 
-        # backgrounds
         self.top_background = QLabel(self)
         self.top_background.resize(780, 100)
         self.top_background.move(10, 10)
@@ -53,18 +52,27 @@ class MainWindow(QMainWindow):
         self.link.resize(700, 200)
         self.link.move(20, 183)
 
-        self.wrong_pic = QLabel(self)
-        self.wrong_pic.resize(50, 50)
-        self.wrong_pic.move(630, 170)
-
         self.link_textbox = QLineEdit(self)
         self.link_textbox.move(130, 180)
         self.link_textbox.resize(500, 30)
         self.link_textbox.setPlaceholderText("Example:http://www.youtube.com/watch?v=ecsCrOEYl7c")
-        self.link_textbox.textChanged.connect(lambda: button_function.clear(self))
+        self.link_textbox.textChanged.connect(lambda: self.if_link_box_is_empty())
+
+        self.wrong_pic = QLabel(self)
+        self.wrong_pic.resize(50, 50)
+        self.wrong_pic.move(630, 170)
+
+        self.reset_button = QPushButton(self)
+        self.reset_button.setGeometry(710, 175, 40, 40)
+        self.reset_button.setObjectName("reset")
+        self.reset_button.setToolTip("Wyczyszcza wszystkie pola")
+        self.reset_button.setIcon(QIcon("resources/icons/clear.png"))
+        self.reset_button.setIconSize(QSize(40, 40))
+        self.reset_button.setAutoFillBackground(True)
+        self.reset_button.clicked.connect(lambda: button_function.clear(self))
 
         self.check_button = QPushButton(self)
-        self.check_button.setGeometry(680, 175, 40, 40)
+        self.check_button.setGeometry(665, 175, 40, 40)
         self.check_button.setIcon(QIcon("resources/icons/fetch.png"))
         self.check_button.setIconSize(QSize(40, 40))
         self.check_button.setAutoFillBackground(True)
@@ -156,3 +164,13 @@ class MainWindow(QMainWindow):
         currentTime = QTime.currentTime()
         displayTxt = currentTime.toString('hh:mm:ss')
         self.time.setText(displayTxt)
+
+    def if_link_box_is_empty(self):
+        if self.link_textbox.text() == "":
+            self.wrong_pic.clear()
+            self.description.clear()
+            self.image_label.clear()
+            self.set_format.clear()
+            self.save_location.clear()
+            self.status.setValue(0)
+            self.app_status.showMessage("Status: Oczekiwanie")
