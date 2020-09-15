@@ -3,6 +3,7 @@ import alerts_window
 import audio_converter_window
 import button_function
 
+filenames = []
 
 def information(self, link):
     try:
@@ -12,7 +13,7 @@ def information(self, link):
     else:
         self.pixmap_2 = QPixmap("resources/icons/check.png")
         self.scaled_pix_2 = self.pixmap_2.scaled(30, 30, Qt.KeepAspectRatio, Qt.FastTransformation)
-        self.wrong_pic.setPixmap(self.scaled_pix_2)
+        self.if_link_correct.setPixmap(self.scaled_pix_2)
         self.app_status.showMessage("Prawidłowy link!")
         self.description.setText(
             "Tytuł: %s\n\nAutor: %s\n\nOpis: %s" % (self.youtube.title, self.youtube.author, self.youtube.description))
@@ -30,27 +31,25 @@ def information(self, link):
         self.image_label.setPixmap(self.scaled)
 
 
-def download(self, link, location):
+def download(self, location = None, links = None, quality = None):
+    if quality is None:
+        quality = []
+    if links is None:
+        links = []
+    if location is None:
+        location = []
+
     itag = self.set_format.itemData(self.set_format.currentIndex())
-    video = pytube.YouTube(link)
-    stream = video.streams.get_by_itag(itag)
-    default_filename = stream.default_filename
-    file_location = str(location) + str("/") + str(default_filename.split('.')[0]) + str(".mp4")
-    if Path(file_location).is_file():
-        self.app_status.showMessage("Status: Plik istnieje")
-        alerts_window.file_exist(self, location, default_filename)
-    else:
-        self.app_status.showMessage("Status: Pobieranie")
-        video_download(self, link, location, default_filename)
+    for i in range(len(links)):
+        print("{}\n {}\n {}\n".format(location[i], links[i], quality[i]))
 
 
-def video_download(self, link, location, default_filename):
+
+def video_download(self, link, location, filename):
     def progress_function(percent):
         if percent != self.status.value():
-            print(percent)
+            self.app_status.showMessage("Status: Pobieranie pliku {}".format(filename))
             self.status.setValue(percent)
-            if percent == 100.0:
-                end_download(self, location, default_filename)
 
     itag = self.set_format.itemData(self.set_format.currentIndex())
     self.downloader = Downloader()
@@ -61,7 +60,7 @@ def video_download(self, link, location, default_filename):
 class Downloader(QThread):
     processSignal = pyqtSignal(float)
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(Downloader, self).__init__()
         self.path = None
         self.url = None
@@ -90,24 +89,4 @@ class Downloader(QThread):
         percentage = round((1 - bytes_remaining / self.stream.filesize) * 100, 4)
         self.processSignal.emit(percentage)
 
-
-def end_download(self, location, default_filename):
-    if self.convert_mp3_check.isChecked():
-        self.app_status.showMessage("Status: Konwersja")
-        audio_converter_window.converter(self, location, default_filename)
-        button_function.clear(self)
-    else:
-        self.app_status.showMessage("Status: Pobieranie Zakończone")
-        alerts_window.download_finished_window(self)
-        button_function.clear(self)
-    self.app_status.showMessage("Status: Oczekiwanie")
-
-
-
-
-
-
-
-
-
-
+#audio_converter_window.converter(self, location, default_filename)

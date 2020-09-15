@@ -25,7 +25,7 @@ def no_location(self):
 def bad_link_warning(self):
     self.pixmap_2 = QPixmap("resources/icons/wrong.png")
     self.scaled_pix_2 = self.pixmap_2.scaled(30, 30, Qt.KeepAspectRatio, Qt.FastTransformation)
-    self.wrong_pic.setPixmap(self.scaled_pix_2)
+    self.if_link_correct.setPixmap(self.scaled_pix_2)
     self.app_status.showMessage("Nieprawidłowy link")
     self.loading = QMovie("resources/gif/yt_loading.gif")
     self.loading.setScaledSize(QSize(240, 120))

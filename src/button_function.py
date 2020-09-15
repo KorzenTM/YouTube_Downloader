@@ -2,6 +2,23 @@ from libraries import *
 import alerts_window
 import yt_download
 
+links = []
+quality = []
+locations = []
+
+
+def add_to_list(self, link, save_location, itag):
+    if self.link_textbox.text() == "":
+        alerts_window.no_link(self)
+    elif self.save_location.text() == "":
+        alerts_window.no_location(self)
+    else:
+        links.append(link)
+        locations.append(save_location)
+        quality.append(itag)
+        self.app_status.showMessage("Status: Dodano element do listy pobierania")
+        clear(self)
+
 
 def save_directory(self):
     dialog = QFileDialog()
@@ -23,18 +40,18 @@ def check_state_link_textbox(self, link):
         yt_download.information(self, link)
 
 
-def download_video(self, location, link):
-    if self.link_textbox.text() == "":
-        alerts_window.no_link(self)
-    if self.save_location.text() == "":
-        alerts_window.no_location(self)
+def download_video(self):
+    try:
+        yt_download.download(self, locations, links, quality)
+    except:
+        alerts_window.download_error(self)
     else:
-        yt_download.download(self, link, location)
+        self.app_status.showMessage("Status: Rozpoczęto pobieranie")
 
 
 def clear(self):
     self.link_textbox.clear()
-    self.wrong_pic.clear()
+    self.if_link_correct.clear()
     self.description.clear()
     self.image_label.clear()
     self.set_format.clear()
