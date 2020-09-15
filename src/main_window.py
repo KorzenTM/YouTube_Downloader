@@ -147,17 +147,19 @@ class MainWindow(QMainWindow):
         self.status = QProgressBar(self)
         self.status.setGeometry(50, 460, 450, 25)
 
-        self.convert_mp3_check = QCheckBox("Zaznacz, aby po pobraniu rozpocząć proces konwersji.", self)
-        self.convert_mp3_check.setGeometry(50, 425, 350, 150)
-        self.convert_mp3_check.setObjectName("convert_mp3_check")
-
         self.button_download = QPushButton("POBIERZ", self)
-        self.button_download.resize(215, 50)
-        self.button_download.move(535, 450)
-        self.button_download.setObjectName("download")
+        self.button_download.resize(215, 40)
+        self.button_download.move(535, 425)
+        self.button_download.setObjectName("download_button")
         self.button_download.setToolTip("Pobiera plik w wskazane miejsce")
         self.button_download.clicked.connect(
             lambda: button_function.download_video(self))
+
+        self.convert_button = QPushButton("Konwertuj", self)
+        self.convert_button.resize(215, 40)
+        self.convert_button.move(535, 475)
+        self.convert_button.setObjectName("convert_button")
+        self.convert_button.setToolTip("Konwertuje na wybrany format muzyczny")
 
         self.app_status = QStatusBar(self)
         self.app_status.showMessage("Status: Oczekiwanie")

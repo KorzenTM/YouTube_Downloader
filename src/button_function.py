@@ -1,6 +1,6 @@
 from libraries import *
 import alerts_window
-import yt_download
+import youtube_downloader
 
 links = []
 quality = []
@@ -37,12 +37,12 @@ def check_state_link_textbox(self, link):
     except:
         alerts_window.bad_link_warning(self)
     else:
-        yt_download.information(self, link)
+        youtube_downloader.information(self, link)
 
 
 def download_video(self):
     try:
-        yt_download.download(self, locations, links, quality)
+        youtube_downloader.download(self, locations, links, quality)
     except:
         alerts_window.download_error(self)
     else:
