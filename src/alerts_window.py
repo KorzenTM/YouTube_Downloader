@@ -1,6 +1,6 @@
 
 from libraries import *
-import audio_converter
+import audio_converter_window
 
 def no_link(self):
     msg_link = QMessageBox()
@@ -94,7 +94,7 @@ def file_exist(self, location, filename):
     return_value = msg_file.exec_()
 
     if return_value == QMessageBox.Ok:
-        audio_converter.converter(self, location, filename)
+        audio_converter_window.converter(self, location, filename)
 
 
 

@@ -1,6 +1,9 @@
 import button_function
 from libraries import *
 
+WIDTH = 800
+HEIGHT = 600
+
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -9,7 +12,7 @@ class MainWindow(QMainWindow):
         self.qss_file = open("qss/style.qss").read()
 
         self.setWindowTitle("YouTube Video Downloader by KorzenTM")
-        self.resize(800, 600)
+        self.setFixedSize(WIDTH, HEIGHT)
         self.setStyleSheet(self.qss_file)
         self.setWindowIcon(QIcon("resources/icons/YouTube-icon.png"))
 
@@ -53,7 +56,7 @@ class MainWindow(QMainWindow):
         self.link.move(20, 183)
 
         self.link_textbox = QLineEdit(self)
-        self.link_textbox.move(130, 180)
+        self.link_textbox.move(105, 180)
         self.link_textbox.resize(500, 30)
         self.link_textbox.setPlaceholderText("Example:http://www.youtube.com/watch?v=ecsCrOEYl7c")
         self.link_textbox.textChanged.connect(lambda: self.if_link_box_is_empty())

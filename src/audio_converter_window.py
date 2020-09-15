@@ -1,37 +1,15 @@
 from libraries import *
 import button_function
-import alerts
+import alerts_window
+
+WIDTH = 480
+HEIGHT = 320
 
 
-class convert(QThread):
-    processSignal = pyqtSignal(str)
-
-    def __init__(self, parent=None):
-        super(convert, self).__init__()
-        self.full_path = None
-        self.output_path = None
-        self.sound_quality = None
-
-    def convert(self, full_path, output_path, sound_quality):
-        self.full_path = full_path
-        self.output_path = output_path
-        self.sound_quality = sound_quality
-
-        self.start()
-
-    def run(self):
-        message = "Status: Konwersja"
-        error_message = "Status: Wystąpił błąd podczas konwersji. Sprawdź ustawienia"
-        self.processSignal.emit(message)
-        try:
-            clip = AudioFileClip(self.full_path)
-            clip.write_audiofile(self.output_path, fps=44100, nbytes=4, bitrate=self.sound_quality)
-        except:
-            self.processSignal.emit(error_message)
-        else:
-            os.remove(self.full_path)
-            message_2 = "Status: Konwersja zakończona!"
-            self.processSignal.emit(message_2)
+def converter(self, location, filename):
+    window_2 = convert_window(self)
+    window_2.get_data(location, filename)
+    window_2.show()
 
 
 class convert_window(QMainWindow):
@@ -39,7 +17,7 @@ class convert_window(QMainWindow):
         super(convert_window, self).__init__(*args, **kwargs)
         self.setWindowTitle("Audio Converter")
         self.setWindowIcon(QIcon("resources/icons/converter.png"))
-        self.resize(480, 320)
+        self.setFixedSize(WIDTH, HEIGHT)
 
         self.sound_quality = "64k"
         self.format = ""
@@ -171,11 +149,11 @@ class convert_window(QMainWindow):
             if message == "Status: Wystąpił błąd podczas konwersji. Sprawdź ustawienia":
                 self.progres.clear()
                 self.progres.setPixmap(self.scaled_pix_1)
-                alerts.convert_error(self)
+                alerts_window.convert_error(self)
             if message == "Status: Konwersja zakończona!":
                 self.progres.clear()
                 self.progres.setPixmap(self.scaled_pix_2)
-                alerts.convert_finished(self)
+                alerts_window.convert_finished(self)
                 self.close()
 
         location = self.file_location.text()
@@ -191,7 +169,34 @@ class convert_window(QMainWindow):
         self.conv.convert(full_path, output_path, quality)
 
 
-def converter(self, location, filename):
-    window_2 = convert_window(self)
-    window_2.get_data(location, filename)
-    window_2.show()
+class convert(QThread):
+    processSignal = pyqtSignal(str)
+
+    def __init__(self, parent=None):
+        super(convert, self).__init__()
+        self.full_path = None
+        self.output_path = None
+        self.sound_quality = None
+
+    def convert(self, full_path, output_path, sound_quality):
+        self.full_path = full_path
+        self.output_path = output_path
+        self.sound_quality = sound_quality
+
+        self.start()
+
+    def run(self):
+        message = "Status: Konwersja"
+        error_message = "Status: Wystąpił błąd podczas konwersji. Sprawdź ustawienia"
+        self.processSignal.emit(message)
+        try:
+            clip = AudioFileClip(self.full_path)
+            clip.write_audiofile(self.output_path, fps=44100, nbytes=4, bitrate=self.sound_quality)
+        except:
+            self.processSignal.emit(error_message)
+        else:
+            os.remove(self.full_path)
+            message_2 = "Status: Konwersja zakończona!"
+            self.processSignal.emit(message_2)
+
+

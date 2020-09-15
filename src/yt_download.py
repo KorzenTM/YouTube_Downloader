@@ -1,6 +1,6 @@
 from libraries import *
-import alerts
-import audio_converter
+import alerts_window
+import audio_converter_window
 import button_function
 
 
@@ -8,7 +8,7 @@ def information(self, link):
     try:
         self.video = self.youtube.streams.filter(progressive=True, file_extension='mp4').order_by('resolution')
     except:
-        alerts.information_error()
+        alerts_window.information_error()
     else:
         self.pixmap_2 = QPixmap("resources/icons/check.png")
         self.scaled_pix_2 = self.pixmap_2.scaled(30, 30, Qt.KeepAspectRatio, Qt.FastTransformation)
@@ -38,7 +38,7 @@ def download(self, link, location):
     file_location = str(location) + str("/") + str(default_filename.split('.')[0]) + str(".mp4")
     if Path(file_location).is_file():
         self.app_status.showMessage("Status: Plik istnieje")
-        alerts.file_exist(self, location, default_filename)
+        alerts_window.file_exist(self, location, default_filename)
     else:
         self.app_status.showMessage("Status: Pobieranie")
         video_download(self, link, location, default_filename)
@@ -80,7 +80,7 @@ class Downloader(QThread):
         try:
             self.video = pytube.YouTube(self.url)
         except:
-            alerts.download_error(self)
+            alerts_window.download_error(self)
         else:
             self.video.register_on_progress_callback(self.return_progress)
             self.stream = self.video.streams.get_by_itag(self.itag)
@@ -94,11 +94,11 @@ class Downloader(QThread):
 def end_download(self, location, default_filename):
     if self.convert_mp3_check.isChecked():
         self.app_status.showMessage("Status: Konwersja")
-        audio_converter.converter(self, location, default_filename)
+        audio_converter_window.converter(self, location, default_filename)
         button_function.clear(self)
     else:
         self.app_status.showMessage("Status: Pobieranie Zakończone")
-        alerts.download_finished_window(self)
+        alerts_window.download_finished_window(self)
         button_function.clear(self)
     self.app_status.showMessage("Status: Oczekiwanie")
 

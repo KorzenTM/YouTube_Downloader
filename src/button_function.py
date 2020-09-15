@@ -1,5 +1,5 @@
 from libraries import *
-import alerts
+import alerts_window
 import yt_download
 
 
@@ -18,16 +18,16 @@ def check_state_link_textbox(self, link):
     try:
         self.youtube = pytube.YouTube(link)
     except:
-        alerts.bad_link_warning(self)
+        alerts_window.bad_link_warning(self)
     else:
         yt_download.information(self, link)
 
 
 def download_video(self, location, link):
     if self.link_textbox.text() == "":
-        alerts.no_link(self)
+        alerts_window.no_link(self)
     if self.save_location.text() == "":
-        alerts.no_location(self)
+        alerts_window.no_location(self)
     else:
         yt_download.download(self, link, location)
 
